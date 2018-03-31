@@ -7,6 +7,13 @@ const app = express();
 
 app.use(body_parser.json());
 
+app.get('/', (req, res) => {
+    res.json({
+        name: 'e-health api',
+        version: '1.0.1'
+    });
+});
+
 app.post('/medical-record', (req, res) => {
     const medical_record = req.body;
 
