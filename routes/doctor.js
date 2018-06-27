@@ -280,20 +280,20 @@ router.get('/medical_records', function(req,res){
 
 });
 
-router.get('/erase_patient', function(req,res){
-    var dbo = db.get().db('eheath');
-    dbo.collection("patient").drop(function(err, delOK) {
-        if (err) throw err;
-        if (delOK) console.log("Collection deleted");
-      });
-})
+// router.get('/erase_patient', function(req,res){
+//     var dbo = db.get().db('eheath');
+//     dbo.collection("patient").drop(function(err, delOK) {
+//         if (err) throw err;
+//         if (delOK) console.log("Collection deleted");
+//       });
+// })
 
-router.get('/erase_medical', function(req,res){
-    var dbo = db.get().db('eheath');
-    dbo.collection("medical_records").drop(function(err, delOK) {
-        if (err) throw err;
-        if (delOK) console.log("Collection deleted");
-      });
-})
+// router.get('/erase_medical', function(req,res){
+//     var dbo = db.get().db('eheath');
+//     dbo.collection("medical_records").drop(function(err, delOK) {
+//         if (err) throw err;
+//         if (delOK) console.log("Collection deleted");
+//       });
+// })
 //Return router
 module.exports = router;

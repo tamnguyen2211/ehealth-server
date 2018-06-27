@@ -81,6 +81,30 @@ router.post('/:id/delete', function(req,res){
     });
 })
 
+router.post('/:id/update', function(req,res){
+    const id = req.params.id;
+    let value = req.body;
+    if(!value){
+        res.status(400).json({
+            message: "Missing body"
+        })
+        return;
+    }
+    var dbo = db.get().db('eheath');
+    var myquery = { _id: new ObjectID(id)};
+    value = {
+        $set: value
+    }
+    dbo.collection("medical_records").updateOne(myquery, value, function(err, result) {
+        if (err) throw err;
+        dbo.collection('medical_records').findOne(myquery, function(err, result) {
+            if (err) throw err;
+            res.json(result);
+        });
+        
+    });
+})
+
 router.get('/:id', function(req,res){
     const id = req.params.id;
     
