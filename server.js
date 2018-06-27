@@ -64,7 +64,7 @@ db.connect(uri, function (err) {
     // Initialize the app.
     var server = app.listen(process.env.PORT || 4000, () => {
         console.log(server.address().port);
-        console.log('Stock Analysis API Running on port 4000');
+        // console.log('Stock Analysis API Running on port 4000');
     });
   }
 
