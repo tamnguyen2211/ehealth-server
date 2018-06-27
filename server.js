@@ -67,7 +67,16 @@ db.connect(uri, function (err) {
   // Save database object from the callback for reuse.
   
 });
-
+app.route('/book')
+  .get(function(req, res) {
+    res.send('Get a random book');
+  })
+  .post(function(req, res) {
+    res.send('Add a book');
+  })
+  .put(function(req, res) {
+    res.send('Update the book');
+  });
 app.use('/medical_record', require('./routes/medical_record'));
 app.use('/doctor', require('./routes/doctor'));
 app.use('/admin', require('./routes/admin'));
