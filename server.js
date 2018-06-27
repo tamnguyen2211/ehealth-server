@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,doctor-auth,patient-auth,admin-auth');
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
@@ -69,7 +69,9 @@ db.connect(uri, function (err) {
 });
 
 app.use('/medical_record', require('./routes/medical_record'));
-
+app.use('/doctor', require('./routes/doctor'));
+app.use('/admin', require('./routes/admin'));
+app.use('/patient', require('./routes/patient'));
 // app.listen(process.env.PORT || 4000, () => {
 //     console.log('Stock Analysis API Running on port 4000');
 // });
