@@ -4,7 +4,7 @@ var request  = require('request');
 var db = require('../db')
 var ObjectID = require('mongodb').ObjectID;
 var _ = require("underscore");
-
+var moment = require('moment');
 // get all medical record
 router.get('/', function(req,res){
 

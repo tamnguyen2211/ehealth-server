@@ -140,5 +140,107 @@ router.get('/medical_records', function(req,res){
     })
 
 });
+router.get('/medical_advises', function(req, res){
+    const patientId = req.headers["patient-auth"];
+
+    if(!patientId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Patient: Get Advises"
+        })
+        return;
+    }
+
+    var dbo = db.get().db('eheath');
+    dbo.collection("patient").findOne({_id: new ObjectID(patientId)}, (err, patient) =>{
+        if(err) throw err;
+        if(!patient){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Patient: Get Advises"
+            })
+            return;
+        }
+        dbo.collection('medical_advises').find({patient_id: patientId}).toArray((err, advises) =>{
+            if (err) throw err;
+            res.json(advises);
+        })
+    })
+
+})
+
+router.post('/medical_advises/create', function(req, res){
+    const patientId = req.headers["patient-auth"];
+
+    if(!patientId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Patient: Create Advise"
+        })
+        return;
+    }
+
+    const body = req.body;
+    if(!body){
+        res.status(400).json({
+            message: "Missing body",
+            context: "Patient: Create Advise"
+        })
+        return;
+    }
+
+    let { category, content, crated_at } = body;
+
+    if(!category){
+        res.status(400).json({
+            message: "Missing advise category",
+            context: "Patient: Create Advise"
+        })
+        return;
+    }
+
+    if(!content){
+        res.status(400).json({
+            message: "Missing advise content",
+            context: "Patient: Create Advise"
+        })
+        return;
+    }
+
+    if(!created_at){
+        body.created_at = moment().valueOf();
+    }
+
+    var dbo = db.get().db('eheath');
+    dbo.collection("patient").findOne({_id: new ObjectID(patientId)}, (err, patient) =>{
+        if(err) throw err;
+        if(!patient){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Patient: Create Advise"
+            })
+            return;
+        }
+        body.patient_id = patientId;
+        body.patient = {
+            last_name: patient.last_name,
+            first_name: patient.first_name,
+            id: patientId
+        }
+        body.updated_at = body.created_at;
+        body.status = 0;
+        dbo.collection('medical_advises').insertOne(body, (err, data) => {
+            if (err) throw err;
+            // res.json(result);
+
+            dbo.collection('medical_advises').find({patient_id: patientId}).toArray((err, advises) =>{
+                if (err) throw err;
+                res.json(advises);
+            })
+            
+        });
+    })
+
+})
 //Return router
 module.exports = router;
