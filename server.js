@@ -10,7 +10,7 @@ app.use(body_parser.json());
 app.get('/', (req, res) => {
     res.json({
         name: 'e-health api',
-        version: '1.0.1'
+        version: '1.0.2'
     });
 });
 
