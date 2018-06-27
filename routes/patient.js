@@ -101,5 +101,43 @@ router.post('/signin', function(req, res){
 
     });
 })
+
+
+router.get('/medical_records', function(req,res){
+    const patientId = req.headers["patient-auth"];
+
+    if(!patientId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Patient: Get medical record"
+        })
+        return;
+    }
+
+    
+    var dbo = db.get().db('eheath');
+    dbo.collection("patient").findOne({_id: new ObjectID(patientId)}, (err, result) =>{
+        if(err) throw err;
+        if(!result){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Patient: Get medical record"
+            })
+            return;
+        }
+        dbo.collection("medical_records").findOne({patient_id: patientId}).toArray((err, record) => {
+            if(err) throw err;
+            if(!record){
+                res.status(404).json({
+                    message: "Record not found",
+                    context: "Patient: Get medical record"
+                })
+                return;
+            }
+            res.json(record);
+        })
+    })
+
+});
 //Return router
 module.exports = router;

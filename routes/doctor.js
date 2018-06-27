@@ -256,7 +256,7 @@ router.get('/medical_records', function(req,res){
     if(!doctorId){
         res.status(401).json({
             message: "Missing auhtentication",
-            context: "Doctor: Create Patient"
+            context: "Doctor: Get medical records"
         })
         return;
     }
@@ -268,7 +268,7 @@ router.get('/medical_records', function(req,res){
         if(!result){
             res.status(401).json({
                 message: "No authorization",
-                context: "Doctor: Create patient"
+                context: "Doctor: Get medical records"
             })
             return;
         }
