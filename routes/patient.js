@@ -125,7 +125,7 @@ router.get('/medical_records', function(req,res){
             })
             return;
         }
-        dbo.collection("medical_records").findOne({patient_id: patientId}, (err, record) => {
+        dbo.collection("medical_records").find({doctor_id: doctorId}).toArray((err, record) => {
             if(err) throw err;
             if(!record){
                 res.status(404).json({
