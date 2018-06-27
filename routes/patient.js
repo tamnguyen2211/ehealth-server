@@ -189,7 +189,7 @@ router.post('/medical_advises/create', function(req, res){
         return;
     }
 
-    let { category, content, crated_at } = body;
+    let { category, content, created_at } = body;
 
     if(!category){
         res.status(400).json({
