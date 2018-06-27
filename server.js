@@ -1,6 +1,9 @@
-import express from 'express';
-import body_parser from 'body-parser';
-import * as db from './db';
+// import express from 'express';
+// import body_parser from 'body-parser';
+// import * as db from './db';
+var express = require('express');
+var body_parser = require('body-parser');
+var db = require('./db');
 const mongo_client = require('mongodb').MongoClient;
 const uri = `mongodb://phongnguyen:P%40ssw0rd@ds231199.mlab.com:31199/eheath`;
 const app = express();
@@ -59,7 +62,8 @@ db.connect(uri, function (err) {
   } else{
     console.log("Database connection ready");
     // Initialize the app.
-    app.listen(process.env.PORT || 4000, () => {
+    var server = app.listen(process.env.PORT || 4000, () => {
+        console.log(server.address().port);
         console.log('Stock Analysis API Running on port 4000');
     });
   }
@@ -67,16 +71,6 @@ db.connect(uri, function (err) {
   // Save database object from the callback for reuse.
   
 });
-app.route('/book')
-  .get(function(req, res) {
-    res.send('Get a random book');
-  })
-  .post(function(req, res) {
-    res.send('Add a book');
-  })
-  .put(function(req, res) {
-    res.send('Update the book');
-  });
 app.use('/medical_record', require('./routes/medical_record'));
 app.use('/doctor', require('./routes/doctor'));
 app.use('/admin', require('./routes/admin'));
