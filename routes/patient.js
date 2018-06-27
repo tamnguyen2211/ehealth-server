@@ -4,6 +4,7 @@ var request  = require('request');
 var db = require('../db')
 var ObjectID = require('mongodb').ObjectID;
 var _ = require("underscore");
+var moment = require('moment');
 
 router.get('/', function(req,res){
     const patientId = req.headers["patient-auth"];
