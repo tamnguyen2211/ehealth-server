@@ -129,6 +129,7 @@ router.get('/medical_records', function(req,res){
             if(err) throw err;
             if(!record){
                 res.status(404).json({
+                    id: patientId,
                     message: "Record not found",
                     context: "Patient: Get medical record"
                 })
