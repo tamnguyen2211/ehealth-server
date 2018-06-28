@@ -68,7 +68,7 @@ router.post('/', function(req,res){
     }
 
     var dbo = db.get().db('eheath');
-    var myquery = { _id: new ObjectID(id)};
+    var myquery = { _id: new ObjectID(patientId)};
     newValue = {
         $set: newValue
     }
