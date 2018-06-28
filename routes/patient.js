@@ -6,6 +6,39 @@ var ObjectID = require('mongodb').ObjectID;
 var _ = require("underscore");
 var moment = require('moment');
 
+router.post('/', function(req,res){
+    const patientId = req.headers["patient-auth"];
+
+    if(!patientId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Patient: Get patient detail"
+        })
+        return;
+    }
+
+    let newValue = req.body;
+    if(!newValue){
+        res.status(400).json({
+            message: "Missing body"
+        })
+        return;
+    }
+    var dbo = db.get().db('eheath');
+    var myquery = { _id: new ObjectID(id)};
+    newValue = {
+        $set: newValue
+    }
+    dbo.collection("patient").updateOne(myquery, newValue, function(err, result) {
+        if (err) throw err;
+        dbo.collection('patient').findOne(myquery, function(err, result) {
+            if (err) throw err;
+            res.json(result);
+        });
+        
+    });
+});
+
 router.get('/', function(req,res){
     const patientId = req.headers["patient-auth"];
 
