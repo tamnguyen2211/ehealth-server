@@ -57,8 +57,18 @@ router.post('/:id', function(req,res){
     });
 })
 
-router.post('/:id/delete', function(req,res){
+router.post('/:id/answer', function(req,res){
     const id = req.params.id;
+    const doctorId = req.headers["doctor-auth"];
+
+    if(!doctorId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Doctor: Get medical advises"
+        })
+        return;
+    }
+
     let value = req.body;
     if(!value){
         res.status(400).json({
@@ -66,19 +76,53 @@ router.post('/:id/delete', function(req,res){
         })
         return;
     }
-    var dbo = db.get().db('eheath');
-    var myquery = { _id: new ObjectID(id)};
-    value = {
-        $pull: value
+
+    let { content, created_at } = value;
+    if(!content){
+        res.status(400).json({
+            message: "Missing answer content"
+        })
+        return;
     }
-    dbo.collection("medical_records").updateOne(myquery, value, function(err, result) {
-        if (err) throw err;
-        dbo.collection('medical_records').findOne(myquery, function(err, result) {
+    
+    var dbo = db.get().db('eheath');
+    dbo.collection("doctor").findOne({_id: new ObjectID(doctorId)}, (err, result) =>{
+        if(err) throw err;
+        if(!result){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Doctor: Post answer"
+            })
+            return;
+        }
+
+        if(!created_at){
+            value.created_at = moment().valueOf();
+        }
+
+        value.doctor_id = doctorId;
+        value.doctor = {
+            id: doctorId,
+            last_name: doctor.last_name,
+            first_name: doctor.first_name
+        }
+        var myquery = { _id: new ObjectID(id)};
+        value = {
+            $push: {
+                answers: value
+            }
+        }
+        dbo.collection("medical_advises").updateOne(myquery, value, function(err, result) {
             if (err) throw err;
-            res.json(result);
+            dbo.collection('medical_advises').findOne(myquery, function(err, result) {
+                if (err) throw err;
+                res.json(result);
+            });
+            
         });
-        
-    });
+    })
+    
+    
 })
 
 router.post('/:id/update', function(req,res){
@@ -95,9 +139,9 @@ router.post('/:id/update', function(req,res){
     value = {
         $set: value
     }
-    dbo.collection("medical_records").updateOne(myquery, value, function(err, result) {
+    dbo.collection("medical_advises").updateOne(myquery, value, function(err, result) {
         if (err) throw err;
-        dbo.collection('medical_records').findOne(myquery, function(err, result) {
+        dbo.collection('medical_advises').findOne(myquery, function(err, result) {
             if (err) throw err;
             res.json(result);
         });
