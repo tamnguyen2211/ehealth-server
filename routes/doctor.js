@@ -117,6 +117,36 @@ router.post('/signin', function(req, res){
     });
 })
 
+router.get('/patient_list', function(req,res){
+    const doctorId = req.headers["doctor-auth"];
+
+    if(!doctorId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Doctor: Create Patient"
+        })
+        return;
+    }
+
+    
+    var dbo = db.get().db('eheath');
+    dbo.collection("doctor").findOne({_id: new ObjectID(doctorId)}, (err, doctor) =>{
+        if(err) throw err;
+        if(!doctor){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Doctor: Create patient"
+            })
+            return;
+        }
+        dbo.collection("patient").find({created_by: doctorId}).toArray((err, patientList) => {
+            if(err) throw err;
+            res.json(patientList);
+        })
+    })
+
+});
+
 router.post('/create_patient', function(req,res){
     const doctorId = req.headers["doctor-auth"];
 
