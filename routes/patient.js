@@ -24,7 +24,7 @@ router.post('/', function(req,res){
         })
         return;
     }
-    let { first_name, last_name, username, emergency, insurance, tel, mail, address, note, password } = body;
+    let { first_name, last_name, username, emergency, insurance, tel, mail, address, note, password } = newValue;
 
     if(!first_name || first_name==""){
         res.status(400).json({
@@ -41,7 +41,7 @@ router.post('/', function(req,res){
         })
         return;
     }
-    
+
     if(!tel || tel ==""){
         res.status(400).json({
             message: "Missing patient telephone",
