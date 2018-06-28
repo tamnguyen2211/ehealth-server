@@ -169,7 +169,7 @@ router.post('/create_patient', function(req,res){
 
     let { first_name, last_name, username, emergency, insurance, tel, mail, address, note, password } = body;
 
-    if(!first_name){
+    if(!first_name || first_name==""){
         res.status(400).json({
             message: "Missing patient first name",
             context: "Doctor: Create patient"
@@ -177,7 +177,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!last_name){
+    if(!last_name && last_name==""){
         res.status(400).json({
             message: "Missing patient last name",
             context: "Doctor: Create patient"
@@ -185,7 +185,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!username){
+    if(!username || username=""){
         res.status(400).json({
             message: "Missing patient username",
             context: "Doctor: Create patient"
@@ -193,7 +193,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!tel){
+    if(!tel || tel ==""){
         res.status(400).json({
             message: "Missing patient telephone",
             context: "Doctor: Create patient"
@@ -201,7 +201,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!password){
+    if(!password || password==""){
         res.status(400).json({
             message: "Missing password",
             context: "Doctor: Create patient"
@@ -209,7 +209,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!address){
+    if(!address || address==""){
         res.status(400).json({
             message: "Missing address",
             context: "Doctor: Create patient"
@@ -217,7 +217,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!mail){
+    if(!mail || mail ==""){
         res.status(400).json({
             message: "Missing mail",
             context: "Doctor: Create patient"

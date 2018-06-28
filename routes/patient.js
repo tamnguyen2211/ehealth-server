@@ -12,7 +12,7 @@ router.post('/', function(req,res){
     if(!patientId){
         res.status(401).json({
             message: "Missing auhtentication",
-            context: "Patient: Get patient detail"
+            context: "Patient: Update patient info"
         })
         return;
     }
@@ -24,6 +24,49 @@ router.post('/', function(req,res){
         })
         return;
     }
+    let { first_name, last_name, username, emergency, insurance, tel, mail, address, note, password } = body;
+
+    if(!first_name || first_name==""){
+        res.status(400).json({
+            message: "Missing patient first name",
+            context: "Patient: Update patient info"
+        })
+        return;
+    }
+
+    if(!last_name && last_name==""){
+        res.status(400).json({
+            message: "Missing patient last name",
+            context: "Patient: Update patient info"
+        })
+        return;
+    }
+    
+    if(!tel || tel ==""){
+        res.status(400).json({
+            message: "Missing patient telephone",
+            context: "Patient: Update patient info"
+        })
+        return;
+    }
+
+
+    if(!address || address==""){
+        res.status(400).json({
+            message: "Missing address",
+            context: "Patient: Update patient info"
+        })
+        return;
+    }
+
+    if(!mail || mail ==""){
+        res.status(400).json({
+            message: "Missing mail",
+            context: "Patient: Update patient info"
+        })
+        return;
+    }
+
     var dbo = db.get().db('eheath');
     var myquery = { _id: new ObjectID(id)};
     newValue = {
