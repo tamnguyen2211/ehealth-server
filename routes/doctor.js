@@ -280,6 +280,35 @@ router.get('/medical_records', function(req,res){
 
 });
 
+router.get('/medical_advises', function(req,res){
+    const doctorId = req.headers["doctor-auth"];
+
+    if(!doctorId){
+        res.status(401).json({
+            message: "Missing auhtentication",
+            context: "Doctor: Get medical advises"
+        })
+        return;
+    }
+
+    
+    var dbo = db.get().db('eheath');
+    dbo.collection("doctor").findOne({_id: new ObjectID(doctorId)}, (err, result) =>{
+        if(err) throw err;
+        if(!result){
+            res.status(401).json({
+                message: "No authorization",
+                context: "Doctor: Get medical records"
+            })
+            return;
+        }
+        dbo.collection("medical_advises").find().toArray((err, advises) => {
+            if(err) throw err;
+            res.json(advises);
+        })
+    })
+
+});
 // router.get('/erase_patient', function(req,res){
 //     var dbo = db.get().db('eheath');
 //     dbo.collection("patient").drop(function(err, delOK) {
