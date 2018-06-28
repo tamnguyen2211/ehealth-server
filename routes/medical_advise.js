@@ -86,9 +86,9 @@ router.post('/:id/answer', function(req,res){
     }
     
     var dbo = db.get().db('eheath');
-    dbo.collection("doctor").findOne({_id: new ObjectID(doctorId)}, (err, result) =>{
+    dbo.collection("doctor").findOne({_id: new ObjectID(doctorId)}, (err, doctor) =>{
         if(err) throw err;
-        if(!result){
+        if(!doctor){
             res.status(401).json({
                 message: "No authorization",
                 context: "Doctor: Post answer"
