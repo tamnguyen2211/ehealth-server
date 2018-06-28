@@ -75,6 +75,7 @@ app.use('/medical_record', require('./routes/medical_record'));
 app.use('/doctor', require('./routes/doctor'));
 app.use('/admin', require('./routes/admin'));
 app.use('/patient', require('./routes/patient'));
+app.use('/medical_advise', require('./routes/medical_advise'));
 // app.listen(process.env.PORT || 4000, () => {
 //     console.log('Stock Analysis API Running on port 4000');
 // });
