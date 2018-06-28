@@ -185,7 +185,7 @@ router.post('/create_patient', function(req,res){
         return;
     }
 
-    if(!username || username=""){
+    if(!username || username==""){
         res.status(400).json({
             message: "Missing patient username",
             context: "Doctor: Create patient"
